@@ -7,12 +7,7 @@ import os
 
 # Created a function to generate a keyword list of custom size
 def keyword_list(amount):
-<<<<<<< Updated upstream
-    keywords_csv = "Resources/Wordstream_pet_NJ.csv"
-    keywords_df = pd.read_csv(r'Resources/Wordstream_pet_NJ.csv')
-=======
-    keywords_df = pd.read_csv(r'Resources/Wordstream_petsupplies.csv')
->>>>>>> Stashed changes
+    keywords_df = pd.read_csv(r'Resources/Wordstream_petstores.csv')
     print("csv has been read.")
 
     keyword_list = []
@@ -20,36 +15,10 @@ def keyword_list(amount):
 
 
     for x in range(amount):
-<<<<<<< Updated upstream
-        print("Appending keyword to list...")
-=======
->>>>>>> Stashed changes
         keyword_list.append(keywords_df['Keyword'][x])
 
     return keyword_list
 
-<<<<<<< Updated upstream
-
-
-def keyword_scan(dataset, keyword_list):
-    #for every cell(word) in dataset
-    ratingcount = 0
-
-    for word in dataset
-    #see if word is in keyword list
-    if keyword_list.contains(word):
-        ratingcount = ratingcount + 1
-        #if word is in keyword list:
-        # add to ratings count for dataset and then break/pass
-    #   #end if
-    # 
-    #after for loop, return keyword rating - 
-    #which is, amount of times the word was in the keyword_list
-
-
-# A test call to the keyword function.
-print(keyword_list(10))
-=======
 def petsmart_scrape():
     url="https://www.petsmart.com/"
     response = requests.get(url)
@@ -100,4 +69,3 @@ keyword_list_obj = keyword_list(400)
 
 print("Running scan with these items:")
 print(scan(petsmart_list, keyword_list_obj))
->>>>>>> Stashed changes
