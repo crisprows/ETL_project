@@ -5,7 +5,7 @@ from splinter import Browser
 import os
 
 
-# Created a function to generate a keyword list of custom size
+# Created a function to generate a keyword list of custom size from a specified source
 def keyword_list(amount):
     keywords_df = pd.read_csv(r'Resources/Wordstream_petsupplies.csv')
     print("csv has been read.")
@@ -20,7 +20,7 @@ def keyword_list(amount):
     return keyword_list
 
 
-
+# Michal's code for keyword scraping
 def petsmart_scrape():
     url="https://www.petsmart.com/"
     response = requests.get(url)
@@ -31,7 +31,7 @@ def petsmart_scrape():
     del keywords_list[0]
     return keywords_list
 
-
+# Christy's code for keyword scraping
 def petland_scrape():
     url = 'http://petland.ca'
     response = requests.get(url)
@@ -43,6 +43,7 @@ def petland_scrape():
 
 
 
+# Created a function to compare a list of keywords to a different list of targeted keywords
 def scan(data_list, keyword_list):
     ratingcount = 0
     for word in data_list:
@@ -54,18 +55,17 @@ def scan(data_list, keyword_list):
 
 
 
-# A test call to the keyword and petsmart functions.
+# Identify both lists as well as the keyword rating scores of both datasets as variables
 
 petsmart_list = petsmart_scrape()
 petland_list = petland_scrape()
 
 keyword_list_obj = keyword_list(400)
 
-
 petland_hits = scan(petland_list, keyword_list_obj)
 petsmart_hits = scan(petsmart_list, keyword_list_obj)
 
-
+# Shows results before declaring dictionary entries
 print(f"Petsmart hit {petsmart_hits} keyword results and Petland hit {petland_hits} keyword results")
 
 
@@ -83,6 +83,8 @@ petland_dict = {
         'Keyword Hits':petland_hits,
 }
 
+# Having created a dictionary for each website, they're combined in a 
+# dictionary of dictionaries to unify them and store them together.
 keywords_dict = {
         "Petsmart Info":petsmart_dict,
         "Petland Info":petland_dict
@@ -91,6 +93,7 @@ keywords_dict = {
 
 
 
+# Michal's MongoDB framework, adjusted to "dictionary of dictionaries" format
 print("Storing into PyMongo")
 
 import pymongo
@@ -100,16 +103,11 @@ db = client.website_keywords
 collection = db.petstores
 db.petstores.delete_many({})
 
-# figure out how to upload dictionary into the collection
-
-print(keywords_dict)
+# insert_one inserts the dictionary object into MongoDB
 collection.insert_one(keywords_dict)
 
-#test
-#results = db.petstores.find()
-#for x in results:
-#    print(x)
 
+# Test load insertion by printing collection results
 print("Testing pymongo insertion...")
 results = db.petstores.find()
 for x in results:
