@@ -62,8 +62,55 @@ petland_list = petland_scrape()
 keyword_list_obj = keyword_list(400)
 
 
-p1 = scan(petland_list, keyword_list_obj)
-p2 = scan(petsmart_list, keyword_list_obj)
+petland_hits = scan(petland_list, keyword_list_obj)
+petsmart_hits = scan(petsmart_list, keyword_list_obj)
 
 
-print(f"Petsmart hit {p2} keyword results and Petland hit {p1} keyword results")
+print(f"Petsmart hit {petsmart_hits} keyword results and Petland hit {petland_hits} keyword results")
+
+
+
+print("Declaring dictionaries...")
+petsmart_dict = {
+        'URL':"https://www.petsmart.com/",
+        'Keyword Tags':petsmart_list,
+        'Keyword Hits':petsmart_hits,
+}
+
+petland_dict = {
+        'URL':"http://petland.ca",
+        'Keyword Tags':petland_list,
+        'Keyword Hits':petland_hits,
+}
+
+keywords_dict = {
+        "Petsmart Info":petsmart_dict,
+        "Petland Info":petland_dict
+
+}
+
+
+
+print("Storing into PyMongo")
+
+import pymongo
+conn = 'mongodb://localhost:27017'
+client = pymongo.MongoClient(conn)
+db = client.website_keywords
+collection = db.petstores
+db.petstores.delete_many({})
+
+# figure out how to upload dictionary into the collection
+
+print(keywords_dict)
+collection.insert_one(keywords_dict)
+
+#test
+#results = db.petstores.find()
+#for x in results:
+#    print(x)
+
+print("Testing pymongo insertion...")
+results = db.petstores.find()
+for x in results:
+    print(x)
